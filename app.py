@@ -4,7 +4,7 @@ import scrape_mars
 import databaseconfig as cfg
 
 # Setup the databaseconfig.py with the required information depending on 
-# whether you are using local or Atlas (cloud) or MongoDb
+# whether you are using local or Atlas (cloud) MongoDb
 # The databaseconfig.py file contains a datadict with the following structure:
 # msql = { 'server' : '<server_name>',      #Atlas -> 'mongodb+srv'
                                             #local -> 'mongodb'
@@ -16,6 +16,14 @@ import databaseconfig as cfg
                                             #local -> ''
 #          'database': '<database>'}        #Atlas -> databasename?retryWrites=true&w=majority  
                                             #      -> databasename
+
+# For local MongoDB the use definition below for the databasecofig.py
+# Local MongoDB connection information
+# msql = { 'server' : 'mongodb',                        #default: mongodb,
+#          'username': 'localhost',                     #localhost
+#          'passwd': '27017',                           #portnumber
+#          'cluster': '',                               #leave empty
+#          'database': 'mars_app'}                      #databasename
 
 # Create an instance of Flask
 app = Flask(__name__)
