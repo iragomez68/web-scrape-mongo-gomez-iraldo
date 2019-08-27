@@ -1,12 +1,30 @@
 from flask import Flask, render_template, redirect
 from flask_pymongo import PyMongo
 import scrape_mars
+import databaseconfig as cfg
+
+# Setup the databaseconfig.py with the required information depending on 
+# whether you are using local or Atlas (cloud) or MongoDb
+# The databaseconfig.py file contains a datadict with the following structure:
+# msql = { 'server' : '<server_name>',      #Atlas -> 'mongodb+srv'
+                                            #local -> 'mongodb'
+#          'username': '<username>',        #Atlas -> username 
+                                            #local -> 'localhost'
+#          'passwd': '<password>',          #Atlas -> passwd for user name
+                                            #local -> port number 27017 (default)
+#          'cluster': '<mongodb_cluster>',  #Atlas -> cluster name including @
+                                            #local -> ''
+#          'database': '<database>'}        #Atlas -> databasename?retryWrites=true&w=majority  
+                                            #      -> databasename
 
 # Create an instance of Flask
 app = Flask(__name__)
 
 # Use PyMongo to establish Mongo connection
-mongo = PyMongo(app, uri="mongodb://localhost:27017/mars_app")
+connection_string = (f"{cfg.msql['server']}://{cfg.msql['username']}:{cfg.msql['passwd']}{cfg.msql['cluster']}/{cfg.msql['database']}")
+# print(connection_string)
+
+mongo = PyMongo(app, uri=connection_string)
 mongo.db.mars.drop()
 
 # Route to render index.html template using data from Mongo
